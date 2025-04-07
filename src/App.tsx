@@ -4,8 +4,14 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Header } from 'components/Header';
 import { BlogPost } from 'components/BlogPost';
-import { Button } from 'components/Button';
-import mockPosts from 'mock/posts.json';
+import { Button } from 'components/Button'
+import { Form } from 'components/Form';
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+`;
 
 const Container = styled.div`
   height: 100vh;
@@ -16,67 +22,6 @@ const Container = styled.div`
   overflow: scroll
 `;
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  right: 40px;
-  bottom: 40px;
-`;
-
-const Form = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Background = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgb(0 0 0 / 75%);
-`;
-
-const Contents = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #ffffff;
-  padding: 32px;
-  border-radius: 8px;
-  z-index: 1;
-`;
-
-const Title = styled.div`
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 16px;
-`;
-
-const InputGroup = styled.div`
-  margin-bottom: 16px;
-`;
-
-const Label = styled.div`
-  font-size: 1.2rem;
-`;
-
-const Input = styled.input`
-  font-size: 1.2rem;
-`;
-
-const Actions = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-`;
-
 interface Post {
   readonly id: number;
   readonly userId: number;
@@ -84,9 +29,9 @@ interface Post {
   readonly body: string;
 }
 
-
 function App() {
   const [posts, setPosts] = useState<ReadonlyArray<Post>>([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
       fetch('https://jsonplaceholder.typicode.com/posts')
@@ -104,26 +49,9 @@ function App() {
         <BlogPost key={post.id} title={post.title} body={post.body} />
       ))}
       <ButtonContainer>
-        <Button label="등록" />
+          <Button label="등록" onClick={() => setShowForm(true)}/>
       </ButtonContainer>
-      <Form>
-        <Background />
-        <Contents>
-          <Title>블로그 글 등록</Title>
-          <InputGroup>
-            <Label>Title: </Label>
-            <Input />
-          </InputGroup>
-          <InputGroup>
-            <Label>Body: </Label>
-            <Input />
-          </InputGroup>
-          <Actions>
-            <Button label="등록하기" />
-            <Button label="닫기" color="#304FFE" />
-          </Actions>
-        </Contents>
-      </Form>
+      {showForm && <Form onClose={() => setShowForm(false)} /> }
     </Container>
   );
 }
