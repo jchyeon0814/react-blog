@@ -42,6 +42,14 @@ function App() {
         });
   }, []);
 
+  const onOpen = () => {
+    setShowForm(true);
+  };
+
+  const onClose = () => {
+    setShowForm(false);
+  };
+
   return (
     <Container>
       <Header />
@@ -49,9 +57,9 @@ function App() {
         <BlogPost key={post.id} title={post.title} body={post.body} />
       ))}
       <ButtonContainer>
-          <Button label="등록" onClick={() => setShowForm(true)}/>
+          <Button label="등록" onClick={onOpen}/>
       </ButtonContainer>
-      {showForm && <Form onClose={() => setShowForm(false)} /> }
+      {showForm && <Form onClose={onClose} />}
     </Container>
   );
 }
